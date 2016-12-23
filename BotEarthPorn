@@ -1,0 +1,11 @@
+curl -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8)AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.112 Safari/534.30" https://www.reddit.com/r/EarthPorn/top/ > dataHTML
+
+grep -o -P "data-url=.{0,1000}" dataHTML | cut -d'"' -f2 > dataLinks
+
+if [ ! -d wallpapers ]; then mkdir wallpapers; fi
+
+cd wallpapers
+
+while read link; do curl -O $link; done < ./../dataLinks
+
+find ! -name "*.jpg" -delete
